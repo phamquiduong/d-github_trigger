@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request, status
 
 from schemas.webhooks.request import WebhookRequest
 from services.builder import Build
-from services.tele import TelegramService
+from services.telegram_ import TelegramService
 
 app = FastAPI()
 logger = logging.getLogger()
@@ -28,8 +28,9 @@ def read_root():
     return {'Hello': 'World'}
 
 
-@app.post('/', status_code=status.HTTP_200_OK)
+@app.post('/{project_name}', status_code=status.HTTP_200_OK)
 async def github_action_webhook(
+    project_name: str,
     webhook_request: WebhookRequest
 ):
     message = Build(webhook_request).run()
