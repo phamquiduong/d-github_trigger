@@ -9,5 +9,5 @@ class Actions(StrEnum):
 
 
 class WebhookRequest(WebhookRequestBase):
-    action: Actions
+    action: Actions | None = None
     check_run: CheckRun | None = None

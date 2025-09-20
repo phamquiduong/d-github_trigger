@@ -33,6 +33,8 @@ async def github_action_webhook(
     project_name: str,
     webhook_request: WebhookRequest
 ):
+    logger.info('Project name: %s', project_name)
+
     message = Build(webhook_request).run()
     await telegram_service.send_message(message)
 
