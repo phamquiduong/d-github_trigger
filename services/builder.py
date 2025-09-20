@@ -8,7 +8,6 @@ logger = logging.getLogger()
 
 class Build:
     def __init__(self, webhook_request: WebhookRequest) -> None:
-        logger.info('Request: %s', webhook_request.model_dump_json())
         self.request = webhook_request
 
     def run(self) -> str | None:
