@@ -1,3 +1,4 @@
+import html
 import logging
 import os
 import traceback
@@ -17,7 +18,7 @@ telegram_service = TelegramService(bot_token=os.environ['BOT_TOKEN'], chat_id=os
 async def general_exception_handler(_: Request, exc: Exception):
     logger.exception(exc)
 
-    message = f'<pre>{traceback.format_exception(exc)}</pre>'
+    message = f'<pre>{html.escape(''.join(traceback.format_exception(exc)))}</pre>'
     await telegram_service.send_message(message)
 
     return {'message': 'OK'}
@@ -32,12 +33,7 @@ def read_root():
 async def github_action_webhook(
     project_name: str,
     webhook_request: WebhookRequest,
-    request: Request
 ):
-    logger.info('Project name: %s', project_name)
-    request_body = await request.body()
-    logger.info('Request: %s', request_body.decode("utf-8"))
-
     message = Build(webhook_request).run()
     await telegram_service.send_message(message)
 

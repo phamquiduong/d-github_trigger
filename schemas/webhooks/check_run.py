@@ -34,3 +34,20 @@ class CheckRun(WebhookRequestBase):
 
     def as_html(self):
         return f'[<a href="{self.html_url}">Action#{self.id}</a>: <b>{self.name}</b>]'
+
+
+class CheckRunHandler:
+    def __init__(self, check_run: CheckRun) -> None:
+        self.check_run = check_run
+
+    def run(self) -> str | None:
+        pr_html = ''.join(f'{pr.as_html()}' for pr in self.check_run.pull_requests)
+        check_run_html = self.check_run.as_html()
+
+        if self.check_run.conclusion == Conclusions.SUCCESS:
+            return f'✅  {pr_html}{check_run_html}  Run success'
+
+        if self.check_run.conclusion == Conclusions.FAILURE:
+            return f'❌  {pr_html}{check_run_html}  Run failure'
+
+        return None
