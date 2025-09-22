@@ -8,4 +8,4 @@ class GithubUser(WebhookRequestBase):
     html_url: str
 
     def as_html(self) -> str:
-        return build_link(link=self.html_url, display=self.name or self.login)
+        return f'[{build_link(link=self.html_url, display=self.name or self.login)}]'

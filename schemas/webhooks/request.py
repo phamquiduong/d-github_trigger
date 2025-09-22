@@ -9,6 +9,7 @@ from schemas.webhooks.workflow_run import WorkFlowRun
 class Actions(StrEnum):
     COMPLETED = 'completed'
     OPENED = 'opened'
+    CLOSED = 'closed'
 
 
 class WebhookRequest(WebhookRequestBase):
