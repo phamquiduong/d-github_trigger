@@ -3,6 +3,7 @@ from enum import StrEnum
 from schemas.base import WebhookRequestBase
 from schemas.webhooks.github_user import GithubUser
 from schemas.webhooks.pull_request import PullRequest
+from schemas.webhooks.review import Review
 from schemas.webhooks.workflow_run import WorkFlowRun
 
 
@@ -11,6 +12,7 @@ class Actions(StrEnum):
     OPENED = 'opened'
     CLOSED = 'closed'
     SYNCHRONIZE = 'synchronize'
+    SUBMITTED = 'submitted'
 
 
 class WebhookRequest(WebhookRequestBase):
@@ -18,3 +20,4 @@ class WebhookRequest(WebhookRequestBase):
     workflow_run: WorkFlowRun | None = None
     pull_request: PullRequest | None = None
     sender: GithubUser | None = None
+    review: Review | None = None
