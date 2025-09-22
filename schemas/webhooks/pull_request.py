@@ -13,7 +13,7 @@ class PullRequest(WebhookRequestBase):
 
     def as_html(self) -> str:
         html_link = build_link(link=self.html_url, display=f'PR#{self.number}')
-        return f'[{html_link} {self.title}]'
+        return f'<b>[{html_link} {self.title}]</b>'
 
 
 class PullRequestHandlerBase(ABC):
@@ -36,3 +36,8 @@ class PullRequestClosedHandler(PullRequestHandlerBase):
             return f'🔀  {self.sender.as_html()} merged {self.pull_request.as_html()}'
 
         return f'❌  {self.sender.as_html()} closed {self.pull_request.as_html()}'
+
+
+class PullRequestSynchronizeHandler(PullRequestHandlerBase):
+    def build(self) -> str | None:
+        return f'🔄  {self.sender.as_html()} updated {self.pull_request.as_html()}'
