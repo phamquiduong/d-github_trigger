@@ -35,7 +35,7 @@ class WorkFlowRun(WebhookRequestBase):
 
     def as_html(self) -> str:
         html_link = build_link(self.html_url, f'Workflow#{self.id}')
-        return f'[{html_link} {self.name}]'
+        return f'<b>[{html_link} {self.name}]</b>'
 
 
 class WorkflowRunHandler:
@@ -47,9 +47,9 @@ class WorkflowRunHandler:
             html_display = self.workflow_run.as_html()
 
             if self.workflow_run.conclusion == Conclusions.SUCCESS:
-                return f'✅  {html_display}  run success'
+                return f'✅  {html_display} run success'
 
             if self.workflow_run.conclusion == Conclusions.FAILURE:
-                return f'❌  {html_display}  run fail'
+                return f'❌  {html_display} run fail'
 
-            return None
+        return None

@@ -10,6 +10,7 @@ class Actions(StrEnum):
     COMPLETED = 'completed'
     OPENED = 'opened'
     CLOSED = 'closed'
+    SYNCHRONIZE = 'synchronize'
 
 
 class WebhookRequest(WebhookRequestBase):

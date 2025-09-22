@@ -1,4 +1,5 @@
-from schemas.webhooks.pull_request import PullRequestClosedHandler, PullRequestOpenedHandler
+from schemas.webhooks.pull_request import (PullRequestClosedHandler, PullRequestOpenedHandler,
+                                           PullRequestSynchronizeHandler)
 from schemas.webhooks.request import Actions, WebhookRequest
 from schemas.webhooks.workflow_run import WorkflowRunHandler
 
@@ -20,5 +21,9 @@ class Build:
             # Pull request closed handler
             if self.request.action == Actions.CLOSED:
                 return PullRequestClosedHandler(self.request.pull_request, self.request.sender).build()
+
+            # Pull request synchronize
+            if self.request.action == Actions.SYNCHRONIZE:
+                return PullRequestSynchronizeHandler(self.request.pull_request, self.request.sender).build()
 
         return None
