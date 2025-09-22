@@ -3,7 +3,7 @@ from schemas.base import WebhookRequestBase
 
 
 class GithubUser(WebhookRequestBase):
-    name: str | None
+    name: str | None = None
     login: str
     html_url: str
 
