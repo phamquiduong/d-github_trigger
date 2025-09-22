@@ -6,6 +6,7 @@ import traceback
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from schemas.webhooks.request import WebhookRequest
 from services.builder import Build
@@ -23,7 +24,10 @@ async def general_exception_handler(_: Request, exc: Exception):
     message = f'<pre>{html.escape(''.join(traceback.format_exception(exc)))}</pre>'
     await telegram_service.send_message(message)
 
-    return {'message': 'OK'}
+    return JSONResponse(
+        status_code=200,
+        content={'message': 'OK'}
+    )
 
 
 @app.exception_handler(RequestValidationError)
@@ -34,7 +38,10 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
     logger.error(json.dumps(error_json, ensure_ascii=False))
 
-    return {'message': 'OK'}
+    return JSONResponse(
+        status_code=200,
+        content={'message': 'OK'}
+    )
 
 
 @app.get('/')
