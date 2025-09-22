@@ -15,14 +15,14 @@ class Review(WebhookRequestBase):
     body: str | None
     html_url: str
     state: State
-    pull_request: PullRequest
 
 
 class ReviewHandler:
-    def __init__(self, review: Review, sender: GithubUser) -> None:
+    def __init__(self, review: Review, sender: GithubUser, pull_request: PullRequest) -> None:
         self.review = review
         self.sender = sender
+        self.pull_request = pull_request
 
     def build(self) -> str | None:
         body_pre = f'<pre>{self.review.body}</pre>' if self.review.body else ''
-        return f'✅  {self.sender.as_html()} {self.review.state} {self.review.pull_request.as_html()}\n{body_pre}'
+        return f'✅  {self.sender.as_html()} {self.review.state} {self.pull_request.as_html()}\n{body_pre}'
