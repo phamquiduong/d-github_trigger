@@ -22,7 +22,7 @@ class Build:
             return (
                 f'{r.pull_request.as_html()}\n'
                 f'{r.pull_request.action_html(action=r.action)}\n'
-                f'By {r.sender.as_html()}'
+                f'{r.sender.as_html()}'
             )
 
         if (
@@ -32,7 +32,7 @@ class Build:
             return (
                 f'{r.pull_request.as_html()}\n'
                 f'{r.review.action_html()}\n'
-                f'By {r.sender.as_html()}\n'
+                f'{r.sender.as_html()}\n'
                 f'{r.review.as_html()}'
             )
 
@@ -42,7 +42,7 @@ class Build:
         ):
             return (
                 f'{r.pull_request.as_html()}\n'
-                f'By {r.sender.as_html()}\n'
+                f'{r.sender.as_html()}\n'
                 f'{r.comment.as_html()}'
             )
 
