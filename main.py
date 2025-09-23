@@ -1,8 +1,6 @@
-import html
 import json
 import logging
 import os
-import traceback
 
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
@@ -20,9 +18,6 @@ telegram_service = TelegramService(bot_token=os.environ['BOT_TOKEN'], chat_id=os
 @app.exception_handler(Exception)
 async def general_exception_handler(_: Request, exc: Exception):
     logger.exception(exc)
-
-    message = f'<pre>{html.escape(''.join(traceback.format_exception(exc)))}</pre>'
-    await telegram_service.send_message(message)
 
     return JSONResponse(
         status_code=200,
