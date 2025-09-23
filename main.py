@@ -12,11 +12,10 @@ from services.telegram_ import TelegramService
 
 app = FastAPI()
 logger = logging.getLogger()
-telegram_service = TelegramService(bot_token=os.environ['BOT_TOKEN'], chat_id=os.environ['CHAT_ID'])
 
 
 @app.exception_handler(Exception)
-async def general_exception_handler(_: Request, exc: Exception):
+def general_exception_handler(_: Request, exc: Exception):
     logger.exception(exc)
 
     return JSONResponse(
@@ -26,7 +25,7 @@ async def general_exception_handler(_: Request, exc: Exception):
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+def validation_exception_handler(request: Request, exc: RequestValidationError):
     error_json = {
         'errors': exc.errors(),
     }
@@ -45,11 +44,14 @@ def read_root():
 
 
 @app.post('/{project_name}', status_code=status.HTTP_200_OK)
-async def github_action_webhook(
+def github_action_webhook(
     project_name: str,
     request: GithubRequest,
 ):
     message = Build(request).run()
-    await telegram_service.send_message(message)
+
+    # TODO: Build service by project_name
+    telegram_service = TelegramService(bot_token=os.environ['BOT_TOKEN'], chat_id=os.environ['CHAT_ID'])
+    telegram_service.send_message(message)
 
     return {'message': 'OK'}
