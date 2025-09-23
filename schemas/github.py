@@ -12,32 +12,32 @@ class WorkFlowRun(ExtraIgnoreModel):
 
     def as_html(self) -> str:
         html_link = build_link(link=self.html_url, display=f'Workflow#{self.id}')
-        return f'⚙️  {html_link}: {self.name}'
+        return f'⚙️ {html_link}: {self.name}'
 
     def conclusion_html(self) -> str:
         match self.conclusion:
             case WorkflowRunConclusions.SUCCESS:
-                return '🎉  Run success'
+                return '🎉 Run success'
             case WorkflowRunConclusions.FAILURE:
-                return '❌  Run failed'
+                return '❌ Run failed'
             case WorkflowRunConclusions.CANCELLED:
-                return '🛑  Run cancelled'
+                return '🛑 Run cancelled'
             case WorkflowRunConclusions.SKIPPED:
-                return '⏭️  Run skipped'
+                return '⏭️ Run skipped'
             case WorkflowRunConclusions.NEUTRAL:
-                return '⚪  Run neutral'
+                return '⚪ Run neutral'
             case WorkflowRunConclusions.STALE:
-                return '🥶  Run stale'
+                return '🥶 Run stale'
             case WorkflowRunConclusions.TIMED_OUT:
-                return '⌛  Run timed out'
+                return '⌛ Run timed out'
             case WorkflowRunConclusions.ACTION_REQUIRED:
-                return '⚠️  Action required'
+                return '⚠️ Action required'
             case WorkflowRunConclusions.STARTUP_FAILURE:
-                return '💥  Startup failure'
+                return '💥 Startup failure'
             case None:
-                return '❓  No conclusion'
+                return '❓ No conclusion'
             case _:
-                return '🤔  Unknown conclusion'
+                return '🤔 Unknown conclusion'
 
 
 class PullRequest(ExtraIgnoreModel):
@@ -48,20 +48,20 @@ class PullRequest(ExtraIgnoreModel):
 
     def as_html(self) -> str:
         html_link = build_link(link=self.html_url, display=f'PR#{self.number}')
-        return f'🔀  {html_link}: {self.title}'
+        return f'🔀 {html_link}: {self.title}'
 
     def action_html(self, action: RequestActions | None):
         match action:
             case RequestActions.OPENED:
-                return '🆕  Pull request created'
+                return '🆕 Created'
             case RequestActions.SYNCHRONIZE:
-                return '🔄  Pull request updated (new commits)'
+                return '🔄 Updated (new commits)'
             case RequestActions.CLOSED if self.merged:
-                return '🎉  Pull request merged'
+                return '🎉 Merged'
             case RequestActions.CLOSED:
-                return '🛑  Pull request closed'
+                return '🛑 Closed'
             case _:
-                return '🤔  Unknown pull request action'
+                return '🤔 Unknown'
 
 
 class Sender(ExtraIgnoreModel):
@@ -71,7 +71,7 @@ class Sender(ExtraIgnoreModel):
 
     def as_html(self) -> str:
         html_link = build_link(link=self.html_url, display=self.name or self.login)
-        return f'👤  {html_link}'
+        return f'👤 {html_link}'
 
 
 class Review(ExtraIgnoreModel):
@@ -79,19 +79,18 @@ class Review(ExtraIgnoreModel):
     html_url: str
     state: ReviewState
 
-    def as_html(self) -> str:
-        html_link = build_link(link=self.html_url, display=f'Review#{self.state}')
+    def body_html(self) -> str:
         pre_text = build_pre(self.body) if self.body else ''
-        return f'📝  {html_link}\n{pre_text}'
+        return pre_text
 
     def action_html(self):
         match self.state:
             case ReviewState.APPROVED:
-                return '✅  Review approved'
+                return '✅ Approved'
             case ReviewState.CHANGES_REQUESTED:
-                return '❌  Changes requested'
+                return '❌ Changes requested'
             case ReviewState.COMMENTED:
-                return '💬  Review commented'
+                return '💬 Commented'
 
 
 class Comment(ExtraIgnoreModel):
@@ -101,9 +100,12 @@ class Comment(ExtraIgnoreModel):
     body: str | None = None
 
     def as_html(self) -> str:
-        html_link = build_link(link=self.html_url, display=f'Comment#{self.path}:{self.position}')
+        html_link = build_link(link=self.html_url, display=f'{self.path}:{self.position}')
+        return f'📄 {html_link}'
+
+    def body_html(self) -> str:
         pre_text = build_pre(text=self.body) if self.body else ''
-        return f'💬  {html_link}\n{pre_text}'
+        return pre_text
 
 
 class GithubRequest(ExtraIgnoreModel):
