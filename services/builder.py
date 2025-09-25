@@ -1,4 +1,4 @@
-from constants.github import RequestActions, WorkflowRunStatus
+from constants.github import RequestActions, ReviewState, WorkflowRunStatus
 from schemas.github import GithubRequest
 
 
@@ -27,6 +27,7 @@ class Build:
         if (
             r.pull_request and r.sender and r.review
             and r.action == RequestActions.SUBMITTED
+            and (r.review.state == ReviewState.APPROVED or r.review.body)
         ):
             return (
                 f'<b>{r.pull_request.as_html()}</b>\n'

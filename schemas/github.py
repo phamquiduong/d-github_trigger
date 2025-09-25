@@ -88,7 +88,7 @@ class Review(ExtraIgnoreModel):
             case ReviewState.APPROVED:
                 return '✅ Approved'
             case ReviewState.CHANGES_REQUESTED:
-                return '❌ Changes requested'
+                return '❌ Request changes'
             case ReviewState.COMMENTED:
                 return '💬 Commented'
 
