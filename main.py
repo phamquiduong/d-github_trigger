@@ -50,8 +50,10 @@ def github_action_webhook(
 ):
     message = Build(request).run()
 
-    # TODO: Build service by project_name
-    telegram_service = TelegramService(bot_token=os.environ['BOT_TOKEN'], chat_id=os.environ['CHAT_ID'])
+    # Telegram message
+    bot_token = os.environ[f'{project_name}_TELEGRAM_BOT_TOKEN']
+    chat_id = os.environ[f'{project_name}_TELEGRAM_CHAT_ID']
+    telegram_service = TelegramService(bot_token=bot_token, chat_id=chat_id)
     telegram_service.send_message(message)
 
     return {'message': 'OK'}
